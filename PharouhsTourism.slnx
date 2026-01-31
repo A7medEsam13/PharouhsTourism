@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PharouhsTourism.Application/PharouhsTourism.Application.csproj" />
+  <Project Path="PharouhsTourism.Domain/PharouhsTourism.Domain.csproj" />
+  <Project Path="PharouhsTourism.Infrastructure/PharouhsTourism.Infrastructure.csproj" />
+  <Project Path="PharouhsTourism/PharouhsTourism.csproj" />
+</Solution>
