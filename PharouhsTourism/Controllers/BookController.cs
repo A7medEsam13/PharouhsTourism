@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using PharouhsTourism.Application.DTOs.Book;
 using PharouhsTourism.Application.Interfaces;
 
@@ -17,6 +18,7 @@ namespace PharouhsTourism.Controllers
         }
 
         [HttpPost]
+        [EnableRateLimiting("FixedWindowPolicy")]
         public async Task<IActionResult> Create(int? hotelId, int? tripId, int? honeymoonId, AddBookDto dto)
         {
             if(!ModelState.IsValid)

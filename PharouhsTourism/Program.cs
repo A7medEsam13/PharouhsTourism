@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -32,6 +33,19 @@ namespace PharouhsTourism
                 options
                 .UseLazyLoadingProxies()
                 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+            // set the implementation of the rate limiter.
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("FixedWindowPolicy", opt =>
+                {
+                    opt.Window = TimeSpan.FromSeconds(5);
+                    opt.PermitLimit = 5;
+                    opt.QueueLimit = 10;
+                    opt.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+                }).RejectionStatusCode = 429;
+            });
 
 
             // add authentication
@@ -73,6 +87,7 @@ namespace PharouhsTourism
                  app.UseSwagger();
                  app.UseSwaggerUI();
             }
+            app.UseRateLimiter();
 
             using (var scope = app.Services.CreateScope())
             {
